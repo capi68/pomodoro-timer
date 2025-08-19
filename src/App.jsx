@@ -7,44 +7,70 @@ function formatTime(seconds) {
 }
 
 export default function App() {
+  // aqui se puede modificar la duracion de los relojes
+  const [workDuration, setWorkDuration] = useState(25);
+  const [breakDuration, setBreakDuration] = useState(5);
+  const [cycles, setCycles] = useState(0);
+  const [longBreakDuration, setLongBreakDuration] = useState(15);
+  
   //Tiempo inicial de 25min, 
-  const [timeLeft, setTimeLeft] = useState(0.5 * 60);
+  const [timeLeft, setTimeLeft] = useState(workDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isBreak, setIsBreak] = useState(false);
 
+
+
   const beepSound = useRef(new Audio("/mixkit-repeating-arcade-beep-1084.wav"));
 
+// Ajustar cuando cambie la duración de trabajo o descanso
   useEffect(() => {
-      let timer;
+    if (!isRunning) {
+      setTimeLeft(isBreak ? breakDuration * 60 : workDuration * 60);
+    }
+  }, [workDuration, breakDuration, isBreak, isRunning]);
 
-      if (isRunning && timeLeft > 0) {
-        timer = setInterval(() => {
-          setTimeLeft((prev) => prev - 1);
-        }, 1000 );
-      } else if (timeLeft === 0 ) {
-        beepSound.current.play().catch((err) => {
-          console.log("error al reproducir", err);
+  // Manejo del timer
+  useEffect(() => {
+    let timer;
+
+    if (isRunning && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (isRunning && timeLeft === 0) {
+      beepSound.current.play().catch((err) => console.log("error al reproducir", err));
+
+      if (isBreak) {
+        // Se completó un ciclo
+        setCycles((prev) => {
+          const newCycles = prev + 1;
+          if (newCycles % 4 === 0) {
+            setTimeLeft(longBreakDuration * 60);
+          } else {
+            setTimeLeft(workDuration * 60);
+          }
+          return newCycles;
         });
-
-        if(isBreak) {
-          // si estaba en descanso--- pasa a trabajo
-          setTimeLeft(25 * 60);
-          setIsBreak(false);
-        } else {
-          // si estaba en trabajo--- pasa a descanso
-          setTimeLeft(5 * 60);
-          setIsBreak(true);
-        }
+        setIsBreak(false);
+      } else {
+        // Pasa a descanso corto
+        setTimeLeft(breakDuration * 60);
+        setIsBreak(true);
       }
-
-      return () => clearInterval(timer); // limpia el intervalo cuando pare
-    }, [isRunning, timeLeft, isBreak]);
-
-    const resetTimer = () => {
-      setIsRunning(false);
-      setTimeLeft(25 * 60); // vuelve a 25 minutos
     }
 
+    return () => clearInterval(timer);
+  }, [isRunning, timeLeft, isBreak, workDuration, breakDuration, longBreakDuration]);
+
+  // Resetear timer
+  const resetTimer = () => {
+    setIsRunning(false);
+    setIsBreak(false);
+    setCycles(0);
+    setTimeLeft(workDuration * 60); // se reinicia contador con tiempo elegido por usuario
+  };
+
+   
   return (
     <div 
       style={{ 
@@ -60,8 +86,24 @@ export default function App() {
         }}
       >
     <h1>Pomodoro Timer</h1>
+
+    {/* Inputs de configuracion */}
+
+    <div>
+      <label>
+        Tiempo de Trabajo (min)
+        <input type="number" value={workDuration} onChange={(e) => setWorkDuration(Number(e.target.value))} disabled={isRunning} />
+        </label>
+      <label>
+        Tiempo de Descanso (min)
+        <input type="number" value={breakDuration} onChange={(e) => setBreakDuration(Number(e.target.value))} disabled={isRunning} />
+      </label>
+    </div>
+
+
     <h2>{ isBreak ? "Break time" : "Work Time"}</h2>
     <p style={{ fontSize: "3rem" }}>{formatTime(timeLeft)}</p>
+    <p>Ciclos completados: {cycles}</p>
     
     <div style={{ marginTop: "20px", display: "flex", gap: "10px"}}>
       <button onClick={() => setIsRunning(true)}>Start</button>
