@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import CircularProgress from "./assets/components/CicularProgress";
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60);
@@ -102,7 +103,8 @@ export default function App() {
 
 
     <h2>{ isBreak ? "Break time" : "Work Time"}</h2>
-    <p style={{ fontSize: "3rem" }}>{formatTime(timeLeft)}</p>
+    
+    <CircularProgress  timeLeft={timeLeft} totalTime={isBreak ? breakDuration * 60 : workDuration * 60} formatTime={formatTime}/>
     <p>Ciclos completados: {cycles}</p>
     
     <div style={{ marginTop: "20px", display: "flex", gap: "10px"}}>
