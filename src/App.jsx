@@ -83,7 +83,7 @@ export default function App() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        transition: "background-color 0.5s ease"
+        transition: "background-color 1s ease"
         }}
       >
     <h1>Pomodoro Timer</h1>
@@ -104,7 +104,7 @@ export default function App() {
 
     <h2>{ isBreak ? "Break time" : "Work Time"}</h2>
     
-    <CircularProgress  timeLeft={timeLeft} totalTime={isBreak ? breakDuration * 60 : workDuration * 60} formatTime={formatTime}/>
+    <CircularProgress  timeLeft={timeLeft} totalTime={isBreak ? breakDuration * 60 : workDuration * 60} formatTime={formatTime} />
     <p>Ciclos completados: {cycles}</p>
     
     <div style={{ marginTop: "20px", display: "flex", gap: "10px"}}>

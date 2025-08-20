@@ -18,6 +18,7 @@ export default function CircularProgress({ timeLeft, totalTime, formatTime }) {
 
             {/* circle en progreso*/ }
             <circle 
+            className="progress-circle"
                 cx="100" 
                 cy="100" 
                 r={radius} 
@@ -37,3 +38,11 @@ export default function CircularProgress({ timeLeft, totalTime, formatTime }) {
         </svg>
     );
 }
+
+<style>
+{`
+  .progress-circle {
+    transition: stroke-dashoffset 0.8s linear;
+  }
+`}
+</style>
