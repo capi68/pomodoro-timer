@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import CircularProgress from "./assets/components/CicularProgress";
+import showNotification from "./assets/components/showNotification";
+import "./app.css";
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60);
@@ -23,6 +25,15 @@ export default function App() {
 
   const beepSound = useRef(new Audio("/mixkit-repeating-arcade-beep-1084.wav"));
 
+// pedir permiso de notificaciones
+useEffect(() => {
+  if ("Notification" in window) {
+    Notification.requestPermission().then((perm) => {
+      console.log("permiso", perm);
+    });
+  } 
+}, []);
+
 // Ajustar cuando cambie la duración de trabajo o descanso
   useEffect(() => {
     if (!isRunning) {
@@ -40,6 +51,8 @@ export default function App() {
       }, 1000);
     } else if (isRunning && timeLeft === 0) {
       beepSound.current.play().catch((err) => console.log("error al reproducir", err));
+
+      showNotification(isBreak ? "Tiempo de volver al trabajo!" : "Tomate un merecido descanso");
 
       if (isBreak) {
         // Se completó un ciclo
@@ -74,6 +87,7 @@ export default function App() {
    
   return (
     <div 
+      className="app-container"
       style={{ 
         backgroundColor: isBreak ? "#4CAF50" : "#F44336", // VERDE PARA BREAK, Y ROJO PARA TRABAJO
         color: "white",
@@ -90,14 +104,14 @@ export default function App() {
 
     {/* Inputs de configuracion */}
 
-    <div>
-      <label>
+    <div className="configuradores">
+      <label className="label-config">
         Tiempo de Trabajo (min)
-        <input type="number" value={workDuration} onChange={(e) => setWorkDuration(Number(e.target.value))} disabled={isRunning} />
+        <input className="buttons-config" type="number" value={workDuration} onChange={(e) => setWorkDuration(Number(e.target.value))} disabled={isRunning} />
         </label>
-      <label>
+      <label className="label-config">
         Tiempo de Descanso (min)
-        <input type="number" value={breakDuration} onChange={(e) => setBreakDuration(Number(e.target.value))} disabled={isRunning} />
+        <input className="buttons-config" type="number" value={breakDuration} onChange={(e) => setBreakDuration(Number(e.target.value))} disabled={isRunning} />
       </label>
     </div>
 
