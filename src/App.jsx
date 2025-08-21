@@ -119,6 +119,10 @@ useEffect(() => {
     <h2>{ isBreak ? "Break time" : "Work Time"}</h2>
     
     <CircularProgress  timeLeft={timeLeft} totalTime={isBreak ? breakDuration * 60 : workDuration * 60} formatTime={formatTime} />
+
+    <text className="timer-sm" x="50%" y="50%" textAnchor="middle" dy=".3em"  fill="white">
+                {formatTime(timeLeft)} 
+            </text>
     <p>Ciclos completados: {cycles}</p>
     
     <div style={{ marginTop: "20px", display: "flex", gap: "10px"}}>

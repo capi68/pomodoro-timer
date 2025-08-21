@@ -1,5 +1,4 @@
 .app-container {
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,13 +7,61 @@
   gap: 1.5rem;
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 auto;
+  padding-bottom: 60px;
   text-align: center;
 }
 
 h1 {
   font-size: 3rem;
   width: 80%;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+.label-config {
+  font-size: 1.2rem;
+}
+
+.buttons-config {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  font-size: 1.2rem;
+
+}
+
+.progress-circle {
+  display: none;
+}
+
+.timer-sm {
+  height: 80px;
+  width: 200px;
+  font-size: 2.5rem;
+}
+@media (min-width: 768px) {
+  .app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-height: 100dvh;
+  max-width: 100dvw;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+  width: 80%;
+}
+
+h2 {
+  font-size: 3rem;
 }
 
 .label-config {
@@ -28,9 +75,14 @@ h1 {
   align-items: center;
   margin: 0 auto;
   font-size: 1.2rem;
-  color: green;
+
 }
 
-@media (min-width: 768px) {
-  
+.progress-circle {
+  display: block;
+}
+
+.timer-sm {
+  display: none;
+}
 }

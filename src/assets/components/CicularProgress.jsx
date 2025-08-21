@@ -5,7 +5,7 @@ export default function CircularProgress({ timeLeft, totalTime, formatTime }) {
     const progress = (timeLeft / totalTime) * circumference;
 
     return (
-        <svg width="220" height="220" viewBox="0 0 220 220" shapeRendering="geometricprecision">
+        <svg className="progress-circle" width="220" height="220" viewBox="0 0 220 220" >
             {/* Ciculo de fondo */}
             <circle 
                 cx="110" 
