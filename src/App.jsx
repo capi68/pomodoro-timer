@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import CircularProgress from "./assets/components/CicularProgress";
 import showNotification from "./assets/components/showNotification";
-import "./App.css";
+import "./app.css";
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60);
