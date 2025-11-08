@@ -39,7 +39,7 @@ useEffect(() => {
     if (!isRunning) {
       setTimeLeft(isBreak ? breakDuration * 60 : workDuration * 60);
     }
-  }, [workDuration, breakDuration, isBreak, isRunning]);
+  }, [workDuration, breakDuration, isBreak]);
 
   // Manejo del timer
   useEffect(() => {
@@ -47,7 +47,7 @@ useEffect(() => {
 
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft((prev) => Math.max(prev - 1, 0));
       }, 1000);
     } else if (isRunning && timeLeft === 0) {
       beepSound.current.play().catch((err) => console.log("error al reproducir", err));
@@ -116,7 +116,7 @@ useEffect(() => {
     </div>
 
 
-    <h2>{ isBreak ? "Break time" : "Work Time"}</h2>
+    <h2>{ isBreak ? "Descanso" : "Tiempo de trabajo"}</h2>
     
     <CircularProgress  timeLeft={timeLeft} totalTime={isBreak ? breakDuration * 60 : workDuration * 60} formatTime={formatTime} />
 
